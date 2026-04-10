@@ -1,0 +1,153 @@
+{
+  "Comment": "InsureMail AI - Email Processing Workflow",
+  "StartAt": "ParseEmail",
+  "States": {
+    "ParseEmail": {
+      "Type": "Task",
+      "Resource": "arn:aws:lambda:REGION:ACCOUNT:function:insuremail-email-parser",
+      "Next": "ClassifyIntent",
+      "Catch": [
+        {
+          "ErrorEquals": ["States.ALL"],
+          "Next": "HandleParseError"
+        }
+      ]
+    },
+    "ClassifyIntent": {
+      "Type": "Task",
+      "Resource": "arn:aws:lambda:REGION:ACCOUNT:function:insuremail-classify-intent",
+      "Next": "RetrieveKnowledge",
+      "Catch": [
+        {
+          "ErrorEquals": ["States.ALL"],
+          "Next": "HandleClassificationError"
+        }
+      ]
+    },
+    "RetrieveKnowledge": {
+      "Type": "Task",
+      "Resource": "arn:aws:lambda:REGION:ACCOUNT:function:insuremail-retrieve-knowledge",
+      "Next": "ValidateCRM",
+      "Catch": [
+        {
+          "ErrorEquals": ["States.ALL"],
+          "Next": "HandleRetrievalError"
+        }
+      ]
+    },
+    "ValidateCRM": {
+      "Type": "Task",
+      "Resource": "arn:aws:lambda:REGION:ACCOUNT:function:insuremail-crm-validation",
+      "Next": "GenerateResponse",
+      "Catch": [
+        {
+          "ErrorEquals": ["States.ALL"],
+          "Next": "HandleCRMError"
+        }
+      ]
+    },
+    "GenerateResponse": {
+      "Type": "Task",
+      "Resource": "arn:aws:lambda:REGION:ACCOUNT:function:insuremail-generate-response",
+      "Next": "DecisionPoint",
+      "Catch": [
+        {
+          "ErrorEquals": ["States.ALL"],
+          "Next": "HandleGenerationError"
+        }
+      ]
+    },
+    "DecisionPoint": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Variable": "$.response_data.action_decision.auto_send",
+          "BooleanEquals": true,
+          "Next": "SendEmail"
+        }
+      ],
+      "Default": "FlagForReview"
+    },
+    "SendEmail": {
+      "Type": "Task",
+      "Resource": "arn:aws:lambda:REGION:ACCOUNT:function:insuremail-email-sender",
+      "Next": "SaveResult",
+      "Catch": [
+        {
+          "ErrorEquals": ["States.ALL"],
+          "Next": "HandleSendError"
+        }
+      ]
+    },
+    "FlagForReview": {
+      "Type": "Task",
+      "Resource": "arn:aws:lambda:REGION:ACCOUNT:function:insuremail-flag-for-review",
+      "Next": "SaveResult",
+      "Catch": [
+        {
+          "ErrorEquals": ["States.ALL"],
+          "Next": "SaveResult"
+        }
+      ]
+    },
+    "SaveResult": {
+      "Type": "Task",
+      "Resource": "arn:aws:lambda:REGION:ACCOUNT:function:insuremail-save-result",
+      "End": true
+    },
+    "HandleParseError": {
+      "Type": "Task",
+      "Resource": "arn:aws:lambda:REGION:ACCOUNT:function:insuremail-error-handler",
+      "Parameters": {
+        "error_type": "parse_error",
+        "email_id.$": "$.email_id"
+      },
+      "Next": "SaveResult"
+    },
+    "HandleClassificationError": {
+      "Type": "Task",
+      "Resource": "arn:aws:lambda:REGION:ACCOUNT:function:insuremail-error-handler",
+      "Parameters": {
+        "error_type": "classification_error",
+        "email_id.$": "$.email_id"
+      },
+      "Next": "RetrieveKnowledge"
+    },
+    "HandleRetrievalError": {
+      "Type": "Task",
+      "Resource": "arn:aws:lambda:REGION:ACCOUNT:function:insuremail-error-handler",
+      "Parameters": {
+        "error_type": "retrieval_error",
+        "email_id.$": "$.email_id"
+      },
+      "Next": "ValidateCRM"
+    },
+    "HandleCRMError": {
+      "Type": "Task",
+      "Resource": "arn:aws:lambda:REGION:ACCOUNT:function:insuremail-error-handler",
+      "Parameters": {
+        "error_type": "crm_error",
+        "email_id.$": "$.email_id"
+      },
+      "Next": "GenerateResponse"
+    },
+    "HandleGenerationError": {
+      "Type": "Task",
+      "Resource": "arn:aws:lambda:REGION:ACCOUNT:function:insuremail-error-handler",
+      "Parameters": {
+        "error_type": "generation_error",
+        "email_id.$": "$.email_id"
+      },
+      "Next": "FlagForReview"
+    },
+    "HandleSendError": {
+      "Type": "Task",
+      "Resource": "arn:aws:lambda:REGION:ACCOUNT:function:insuremail-error-handler",
+      "Parameters": {
+        "error_type": "send_error",
+        "email_id.$": "$.email_id"
+      },
+      "Next": "SaveResult"
+    }
+  }
+}
