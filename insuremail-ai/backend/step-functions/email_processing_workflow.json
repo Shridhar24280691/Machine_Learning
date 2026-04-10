@@ -4,7 +4,7 @@
   "States": {
     "ParseEmail": {
       "Type": "Task",
-      "Resource": "arn:aws:lambda:REGION:ACCOUNT:function:insuremail-email-parser",
+      "Resource": "arn:aws:lambda:us-east-1:227855914226:function:insuremail-email-parser",
       "Next": "ClassifyIntent",
       "Catch": [
         {
@@ -15,7 +15,7 @@
     },
     "ClassifyIntent": {
       "Type": "Task",
-      "Resource": "arn:aws:lambda:REGION:ACCOUNT:function:insuremail-classify-intent",
+      "Resource": "arn:aws:lambda:us-east-1:227855914226:function:insuremail-classify-intent",
       "Next": "RetrieveKnowledge",
       "Catch": [
         {
@@ -26,7 +26,7 @@
     },
     "RetrieveKnowledge": {
       "Type": "Task",
-      "Resource": "arn:aws:lambda:REGION:ACCOUNT:function:insuremail-retrieve-knowledge",
+      "Resource": "arn:aws:lambda:us-east-1:227855914226:function:insuremail-retrieve-knowledge",
       "Next": "ValidateCRM",
       "Catch": [
         {
@@ -37,7 +37,7 @@
     },
     "ValidateCRM": {
       "Type": "Task",
-      "Resource": "arn:aws:lambda:REGION:ACCOUNT:function:insuremail-crm-validation",
+      "Resource": "arn:aws:lambda:us-east-1:227855914226:function:insuremail-crm-validation",
       "Next": "GenerateResponse",
       "Catch": [
         {
@@ -48,7 +48,7 @@
     },
     "GenerateResponse": {
       "Type": "Task",
-      "Resource": "arn:aws:lambda:REGION:ACCOUNT:function:insuremail-generate-response",
+      "Resource": "arn:aws:lambda:us-east-1:227855914226:function:insuremail-generate-response",
       "Next": "DecisionPoint",
       "Catch": [
         {
@@ -70,7 +70,7 @@
     },
     "SendEmail": {
       "Type": "Task",
-      "Resource": "arn:aws:lambda:REGION:ACCOUNT:function:insuremail-email-sender",
+      "Resource": "arn:aws:lambda:us-east-1:227855914226:function:insuremail-email-sender",
       "Next": "SaveResult",
       "Catch": [
         {
@@ -81,7 +81,7 @@
     },
     "FlagForReview": {
       "Type": "Task",
-      "Resource": "arn:aws:lambda:REGION:ACCOUNT:function:insuremail-flag-for-review",
+      "Resource": "arn:aws:lambda:us-east-1:227855914226:function:insuremail-flag-for-review",
       "Next": "SaveResult",
       "Catch": [
         {
@@ -92,12 +92,12 @@
     },
     "SaveResult": {
       "Type": "Task",
-      "Resource": "arn:aws:lambda:REGION:ACCOUNT:function:insuremail-save-result",
+      "Resource": "arn:aws:lambda:us-east-1:227855914226:function:insuremail-save-result",
       "End": true
     },
     "HandleParseError": {
       "Type": "Task",
-      "Resource": "arn:aws:lambda:REGION:ACCOUNT:function:insuremail-error-handler",
+      "Resource": "arn:aws:lambda:us-east-1:227855914226:function:insuremail-error-handler",
       "Parameters": {
         "error_type": "parse_error",
         "email_id.$": "$.email_id"
@@ -106,7 +106,7 @@
     },
     "HandleClassificationError": {
       "Type": "Task",
-      "Resource": "arn:aws:lambda:REGION:ACCOUNT:function:insuremail-error-handler",
+      "Resource": "arn:aws:lambda:us-east-1:227855914226:function:insuremail-error-handler",
       "Parameters": {
         "error_type": "classification_error",
         "email_id.$": "$.email_id"
@@ -115,7 +115,7 @@
     },
     "HandleRetrievalError": {
       "Type": "Task",
-      "Resource": "arn:aws:lambda:REGION:ACCOUNT:function:insuremail-error-handler",
+      "Resource": "arn:aws:lambda:us-east-1:227855914226:function:insuremail-error-handler",
       "Parameters": {
         "error_type": "retrieval_error",
         "email_id.$": "$.email_id"
@@ -124,7 +124,7 @@
     },
     "HandleCRMError": {
       "Type": "Task",
-      "Resource": "arn:aws:lambda:REGION:ACCOUNT:function:insuremail-error-handler",
+      "Resource": "arn:aws:lambda:us-east-1:227855914226:function:insuremail-error-handler",
       "Parameters": {
         "error_type": "crm_error",
         "email_id.$": "$.email_id"
@@ -133,7 +133,7 @@
     },
     "HandleGenerationError": {
       "Type": "Task",
-      "Resource": "arn:aws:lambda:REGION:ACCOUNT:function:insuremail-error-handler",
+      "Resource": "arn:aws:lambda:us-east-1:227855914226:function:insuremail-error-handler",
       "Parameters": {
         "error_type": "generation_error",
         "email_id.$": "$.email_id"
@@ -142,7 +142,7 @@
     },
     "HandleSendError": {
       "Type": "Task",
-      "Resource": "arn:aws:lambda:REGION:ACCOUNT:function:insuremail-error-handler",
+      "Resource": "arn:aws:lambda:us-east-1:227855914226:function:insuremail-error-handler",
       "Parameters": {
         "error_type": "send_error",
         "email_id.$": "$.email_id"

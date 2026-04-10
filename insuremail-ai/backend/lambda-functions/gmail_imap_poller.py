@@ -18,7 +18,7 @@ stepfunctions = boto3.client('stepfunctions')
 INCOMING_BUCKET = os.environ.get('INCOMING_BUCKET', 'insuremail-incoming-227855914226')
 STATE_MACHINE_ARN = os.environ.get('STATE_MACHINE_ARN', 'arn:aws:iam::227855914226:role/machine-learning-role')
 GMAIL_EMAIL = os.environ.get('GMAIL_EMAIL', 'firebreather1097@gmail.com')
-GMAIL_APP_PASSWORD = os.environ.get('GMAIL_APP_PASSWORD', '')
+GMAIL_APP_PASSWORD = os.environ.get('GMAIL_APP_PASSWORD', 'pjbavkhaursmctkh')
 
 def lambda_handler(event, context):
     """

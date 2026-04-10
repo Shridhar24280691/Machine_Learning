@@ -17,7 +17,7 @@ dynamodb = boto3.resource('dynamodb')
 bedrock = boto3.client('bedrock-runtime')
 
 # Configuration
-MODELS_BUCKET = os.environ.get('MODELS_BUCKET', 'insuremail-models')
+MODELS_BUCKET = os.environ.get('MODELS_BUCKET', 'insuremail-models-227855914226')
 EMAILS_TABLE = os.environ.get('EMAILS_TABLE', 'InsureMail-Emails')
 
 # Intent categories for insurance
